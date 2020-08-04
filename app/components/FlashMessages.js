@@ -10,15 +10,14 @@ function FlashMessages(props) {
   }
 
   function createMarkup(msg) {
-    if (cssBehavior == "success") {
-      return { __html: `${msg} &#128640` };
-    }
     if (cssBehavior == "info") {
       return { __html: `${msg} &#9996` };
     }
     if (cssBehavior == "danger") {
       return { __html: `${msg} &#129488` };
     }
+
+    return { __html: msg };
   }
   return (
     <div className="floating-alerts">

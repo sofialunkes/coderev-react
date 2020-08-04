@@ -24,7 +24,7 @@ function HeaderLoggedOut(props) {
           appDispatch({ type: "flashMessage", behavior: "error", value: "Invalido email / senha." });
         }
       } catch (e) {
-        console.log(e.response.data);
+        console.log(e.response);
       }
     }
   }

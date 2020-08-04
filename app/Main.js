@@ -63,7 +63,6 @@ function Main() {
     }
   }, [state.loggedIn]);
 
-  // check if token has expired or not on first render.
   useEffect(() => {
     if (state.loggedIn) {
       const ourRequest = Axios.CancelToken.source();
@@ -72,7 +71,7 @@ function Main() {
           const response = await Axios.post("/checkToken", { token: state.user.token }, { cancelToken: ourRequest.token });
           if (!response.data) {
             dispatch({ type: "logout" });
-            dispatch({ type: "flashMessage", behavior: "info", value: "Your session has expired. Please log in again." });
+            dispatch({ type: "flashMessage", behavior: "info", value: "Sua sessão expirou. Por favor entre novamente." });
           }
         } catch (e) {
           console.log(e.response.data);

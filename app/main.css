@@ -119,6 +119,11 @@ body {
   position: relative;
 }
 
+.form-checkbox-guest {
+  position: relative;
+  z-index: 2;
+}
+
 .liveValidateMessage {
   top: -6px;
   position: absolute;

@@ -25,6 +25,11 @@ function HomeGuest() {
       hasErrors: false,
       message: ""
     },
+    scope: {
+      value: "",
+      hasErrors: false,
+      message: ""
+    },
     submitCount: 0
   };
 
@@ -51,7 +56,7 @@ function HomeGuest() {
       case "emailAfterDelay":
         if (!/^\S+@\S+$/.test(draft.email.value)) {
           draft.email.hasErrors = true;
-          draft.email.message = "Você deve inserir um email válido e garantir que é o email do slack.";
+          draft.email.message = "Você deve inserir um email válido e utilizado no slack.";
         }
         if (!draft.email.hasErrors && !action.noRequest) {
           draft.email.checkCount++;
@@ -80,8 +85,17 @@ function HomeGuest() {
           draft.password.message = "Senha deve conter no minimo 12 caracteres.";
         }
         return;
+      case "scopeImmediately":
+        draft.scope.hasErrors = false;
+        draft.scope.value = action.value;
+        if (draft.scope.value == "") {
+          console.log("entrou aqui");
+          draft.scope.hasErrors = true;
+          draft.scope.message = "Escopo de revisao deve ser escolhido.";
+        }
+        return;
       case "submitForm":
-        if (!draft.name.hasErrors && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors) {
+        if (!draft.name.hasErrors && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.scope.hasErrors) {
           draft.submitCount++;
         }
         return;
@@ -132,7 +146,7 @@ function HomeGuest() {
       const ourRequest = Axios.CancelToken.source();
       async function fetchResults() {
         try {
-          const response = await Axios.post("/register", { name: state.name.value, email: state.email.value, password: state.password.value }, { cancelToken: ourRequest.token });
+          const response = await Axios.post("/register", { name: state.name.value, email: state.email.value, password: state.password.value, scope: state.scope.value }, { cancelToken: ourRequest.token });
           appDispatch({ type: "login", data: response.data });
           appDispatch({ type: "flashMessage", value: "Bem-vindo a sua conta. #bala &#128640;" });
         } catch (e) {
@@ -153,6 +167,7 @@ function HomeGuest() {
     dispatch({ type: "emailAfterDelay", value: state.email.value, noRequest: true });
     dispatch({ type: "passwordImmediately", value: state.password.value });
     dispatch({ type: "passwordAfterDelay", value: state.password.value });
+    dispatch({ type: "scopeImmediately", value: state.scope.value });
 
     dispatch({ type: "submitForm" });
   }
@@ -192,6 +207,40 @@ function HomeGuest() {
               <input onChange={e => dispatch({ type: "passwordImmediately", value: e.target.value })} id="password-register" name="password" className="form-control" type="password" placeholder="Crie uma senha" />
               <CSSTransition in={state.password.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
                 <div className="alert alert-danger small liveValidateMessage">{state.password.message}</div>
+              </CSSTransition>
+            </div>
+            <div className="form-group">
+              <div className="text-muted mb-1">
+                <small>Escopo</small>
+              </div>
+              <div className="form-control form-checkbox-guest">
+                <div className="form-check form-check-inline">
+                  <input onChange={e => dispatch({ type: "scopeImmediately", value: e.target.value })} className="form-check-input" type="checkbox" id="inlineCheckbox1" value="backend" checked={state.scope.value == "backend"} />
+                  <label className="form-check-label text-muted" htmlFor="inlineCheckbox1">
+                    backend
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input onChange={e => dispatch({ type: "scopeImmediately", value: e.target.value })} className="form-check-input" type="checkbox" id="inlineCheckbox2" value="frontend" checked={state.scope.value == "frontend"} />
+                  <label className="form-check-label text-muted" htmlFor="inlineCheckbox2">
+                    frontend
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input onChange={e => dispatch({ type: "scopeImmediately", value: e.target.value })} className="form-check-input" type="checkbox" id="inlineCheckbox3" value="infra" checked={state.scope.value == "infra"} />
+                  <label className="form-check-label text-muted" htmlFor="inlineCheckbox3">
+                    infra
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input onChange={e => dispatch({ type: "scopeImmediately", value: e.target.value })} className="form-check-input" type="checkbox" id="inlineCheckbox4" value="viewer" checked={state.scope.value == "viewer"} />
+                  <label className="form-check-label text-muted" htmlFor="inlineCheckbox4">
+                    viewer
+                  </label>
+                </div>
+              </div>
+              <CSSTransition in={state.scope.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+                <div className="alert alert-danger small liveValidateMessage">{state.scope.message}</div>
               </CSSTransition>
             </div>
             <button type="submit" className="py-3 mt-4 btn btn-lg btn-success btn-block">

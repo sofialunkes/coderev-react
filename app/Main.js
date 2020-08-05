@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, Suspense } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useImmerReducer } from "use-immer";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -16,7 +16,6 @@ import Home from "./components/Home";
 import FlashMessages from "./components/FlashMessages";
 
 import NotFound from "./components/NotFound";
-import LoadingDotsIcon from "./components/LoadingDotsIcon";
 
 function Main() {
   const initialState = {
@@ -88,16 +87,14 @@ function Main() {
         <BrowserRouter>
           <FlashMessages messages={state.flashMessages} behavior={state.behavior} />
           <Header />
-          <Suspense fallback={<LoadingDotsIcon />}>
-            <Switch>
-              <Route path="/" exact>
-                {state.loggedIn ? <Home /> : <HomeGuest />}
-              </Route>
-              <Route>
-                <NotFound />
-              </Route>
-            </Switch>
-          </Suspense>
+          <Switch>
+            <Route path="/" exact>
+              {state.loggedIn ? <Home /> : <HomeGuest />}
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

@@ -17,7 +17,7 @@ function FlashMessages(props) {
       return { __html: `${msg} &#129488` };
     }
 
-    return { __html: msg };
+    return { __html: `${msg} &#128640` };
   }
   return (
     <div className="floating-alerts">

@@ -3,6 +3,7 @@ import Page from "./Page";
 import StateContext from "../StateContext";
 import LoadingDotsIcon from "./LoadingDotsIcon";
 import Axios from "axios";
+import ReviewList from "./ReviewList";
 
 function Home() {
   const appState = useContext(StateContext);
@@ -65,17 +66,7 @@ function Home() {
                   <h3 className="text-center">{totem.name}</h3>
                   <ul className="list-group">
                     {revisors.map(revisor => {
-                      let hastotem = totem._id == revisor.totemId ? "checked" : "";
-                      return (
-                        <li className="list-group-item" key={revisor.id}>
-                          <div className="form-check">
-                            <input className="form-check-input" type="checkbox" value="" defaultChecked={hastotem} id={`defaultCheck${revisor.id}`} />
-                            <label className="form-check-label" htmlFor={`defaultCheck${revisor.id}`}>
-                              {revisor.name}
-                            </label>
-                          </div>
-                        </li>
-                      );
+                      return <ReviewList key={revisor.id} revisor={revisor} totem={totem} />;
                     })}
                   </ul>
                 </div>

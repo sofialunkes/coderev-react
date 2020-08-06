@@ -80,16 +80,15 @@ function HomeGuest() {
         }
         return;
       case "passwordAfterDelay":
-        if (draft.password.value.length < 12) {
+        if (draft.password.value.length < 6) {
           draft.password.hasErrors = true;
-          draft.password.message = "Senha deve conter no minimo 12 caracteres.";
+          draft.password.message = "Senha deve conter no minimo 6 caracteres.";
         }
         return;
       case "scopeImmediately":
         draft.scope.hasErrors = false;
         draft.scope.value = action.value;
         if (draft.scope.value == "") {
-          console.log("entrou aqui");
           draft.scope.hasErrors = true;
           draft.scope.message = "Escopo de revisao deve ser escolhido.";
         }

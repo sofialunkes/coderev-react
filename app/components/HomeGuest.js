@@ -147,7 +147,7 @@ function HomeGuest() {
         try {
           const response = await Axios.post("/register", { name: state.name.value, email: state.email.value, password: state.password.value, scope: state.scope.value }, { cancelToken: ourRequest.token });
           appDispatch({ type: "login", data: response.data });
-          appDispatch({ type: "flashMessage", value: "Bem-vindo a sua conta. #bala &#128640;" });
+          appDispatch({ type: "flashMessage", value: "Bem-vindo a sua conta. #bala " });
         } catch (e) {
           console.log(e.response.data);
         }

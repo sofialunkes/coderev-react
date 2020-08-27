@@ -120,7 +120,9 @@ function Home() {
             {revision.totens.map(totem => {
               return (
                 <div className="col" key={totem._id}>
-                  <h3 className="text-center">{totem.name}</h3>
+                  <h3 className="text-center" style={{ color: totem.color }}>
+                    {totem.name}
+                  </h3>
                   <ul className="list-group">
                     {revision.revisors.map(revisor => {
                       return (

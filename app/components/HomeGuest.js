@@ -172,7 +172,7 @@ function HomeGuest() {
   }
 
   return (
-    <Page title="Welcome!" wide={true}>
+    <Page title="Bem-vindo!" wide={true}>
       <div className="row align-items-center">
         <div className="col-lg-7 py-3 py-md-5">
           <h1 className="display-3">Entregue Código &#128640;</h1>

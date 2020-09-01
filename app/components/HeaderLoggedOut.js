@@ -19,7 +19,7 @@ function HeaderLoggedOut(props) {
         const response = await Axios.post("/login", { email, password });
         if (response.data.token) {
           appDispatch({ type: "login", data: response.data });
-          appDispatch({ type: "flashMessage", value: "Bem vindo." });
+          appDispatch({ type: "flashMessage", value: "Bem-vindo." });
         } else {
           appDispatch({ type: "flashMessage", behavior: "error", value: "Invalido email / senha." });
         }

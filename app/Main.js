@@ -43,7 +43,6 @@ function Main() {
         return;
       case "resetPassword":
         draft.tokenTemp = action.value;
-        console.log(draft.tokenTemp);
       case "logout":
         draft.loggedIn = false;
         return;

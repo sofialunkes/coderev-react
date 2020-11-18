@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import StateContext from "../StateContext";
+import DispatchContext from "../DispatchContext";
 import { withRouter } from "react-router-dom";
 import Axios from "axios";
 import Page from "./Page";
 
 function ResetPassword(props) {
   const appState = useContext(StateContext);
+  const appDispatch = useContext(DispatchContext);
   const [password, setPassword] = useState("");
   const [submitPassword, setSubmitPassword] = useState(0);
 
@@ -23,6 +25,7 @@ function ResetPassword(props) {
         const response = await Axios.post("/reset/password/newPassword", { password }, { headers: { Authorization: appState.tokenTemp } });
 
         if (response) {
+          appDispatch({ type: "flashMessage", value: "Senha alterada com sucesso." });
           props.history.push("/");
         }
       } catch (e) {

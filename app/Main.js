@@ -16,11 +16,14 @@ import Home from "./components/Home";
 import FlashMessages from "./components/FlashMessages";
 
 import NotFound from "./components/NotFound";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
     flashMessages: [],
+    tokenTemp: "",
     behavior: "",
     user: {
       token: localStorage.getItem("complexappToken"),
@@ -38,6 +41,9 @@ function Main() {
         draft.loggedIn = true;
         draft.user = action.data;
         return;
+      case "resetPassword":
+        draft.tokenTemp = action.value;
+        console.log(draft.tokenTemp);
       case "logout":
         draft.loggedIn = false;
         return;
@@ -90,6 +96,12 @@ function Main() {
           <Switch>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
+            </Route>
+            <Route path="/forgot-password">
+              <ForgotPassword />
+            </Route>
+            <Route path="/reset-password">
+              <ResetPassword />
             </Route>
             <Route>
               <NotFound />

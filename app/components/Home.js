@@ -82,7 +82,7 @@ function Home() {
           setState(draft => {
             draft.userId = null;
             draft.totemId = null;
-            draft.passTotemRequestCount--;
+            draft.passTotemRequestCount = 0;
             draft.finishTotemRequestCount++;
           });
           appDispatch({ type: "flashMessage", value: "Totem atualizado." });
@@ -128,8 +128,8 @@ function Home() {
                       return (
                         <li className="list-group-item" key={revisor._id}>
                           <div className="form-check">
-                            <input onChange={() => handleChangeRevisor(totem, revisor)} className="form-check-input" type="checkbox" value={revisor._id} id={`defaultCheck${revisor._id}`} checked={revisor.totemId == totem._id} />
-                            <label className="form-check-label" htmlFor={`defaultCheck${revisor._id}`}>
+                            <input onChange={() => handleChangeRevisor(totem, revisor)} className="form-check-input" type="checkbox" value={revisor._id + totem._id} id={`defaultCheck${revisor._id}`} checked={revisor.totemId == totem._id} />
+                            <label className="form-check-label" htmlFor={`defaultCheck${revisor._id + totem._id}`}>
                               {revisor.name}
                             </label>
                           </div>

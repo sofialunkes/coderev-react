@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import HeaderLoggedOut from "./HeaderLoggedOut";
 import HeaderLoggedIn from "./HeaderLoggedIn";
 import StateContext from "../StateContext";
@@ -7,6 +7,14 @@ import StateContext from "../StateContext";
 function Header(props) {
   const appState = useContext(StateContext);
   const headerContent = appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />;
+  const location = useLocation().pathname;
+
+  function showHeader() {
+    if (location != "/forgot-password" && location != "/reset-password") {
+      return !props.staticEmpty ? headerContent : "";
+    }
+    return "";
+  }
 
   return (
     <header className="header-bar bg-primary mb-3">
@@ -16,7 +24,7 @@ function Header(props) {
             CodeRev
           </Link>
         </h4>
-        {!props.staticEmpty ? headerContent : ""}
+        {showHeader()}
       </div>
     </header>
   );

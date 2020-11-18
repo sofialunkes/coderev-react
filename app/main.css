@@ -93,6 +93,10 @@ body {
   color: #888;
 }
 
+.reset-password-link {
+  font-size: 12px;
+}
+
 @media (min-width: 768px) {
   .input-dark {
     width: auto;

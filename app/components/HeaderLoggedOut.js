@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import Axios from "axios";
 import DispatchContext from "../DispatchContext";
+import { Link } from "react-router-dom";
 
 function HeaderLoggedOut(props) {
   const appDispatch = useContext(DispatchContext);
@@ -30,7 +31,7 @@ function HeaderLoggedOut(props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-0 pt-2 pt-md-0">
+    <form onSubmit={handleSubmit} className="mb-0 pt-md-0">
       <div className="row align-items-center">
         <div className="col-md mr-0 pr-md-0 mb-3 mb-md-0">
           <input
@@ -59,6 +60,12 @@ function HeaderLoggedOut(props) {
         </div>
         <div className="col-md-auto">
           <button className="btn btn-success btn-sm">Entrar</button>
+        </div>
+
+        <div className="row ml-1">
+          <Link to="/forgot-password" className="text-white reset-password-link">
+            Esqueceu a senha?
+          </Link>
         </div>
       </div>
     </form>

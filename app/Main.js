@@ -18,6 +18,7 @@ import FlashMessages from "./components/FlashMessages";
 import NotFound from "./components/NotFound";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
+import Profile from "./components/Profile";
 
 function Main() {
   const initialState = {
@@ -28,7 +29,8 @@ function Main() {
     user: {
       token: localStorage.getItem("complexappToken"),
       email: localStorage.getItem("complexappEmail"),
-      avatar: localStorage.getItem("complexappAvatar")
+      avatar: localStorage.getItem("complexappAvatar"),
+      nickname: localStorage.getItem("complexappNickname")
     },
     isSearchOpen: false,
     isChatOpen: false,
@@ -60,10 +62,12 @@ function Main() {
       localStorage.setItem("complexappToken", state.user.token);
       localStorage.setItem("complexappEmail", state.user.email);
       localStorage.setItem("complexappAvatar", state.user.avatar);
+      localStorage.setItem("complexappNickname", state.user.nickname);
     } else {
       localStorage.removeItem("complexappToken");
       localStorage.removeItem("complexappEmail");
       localStorage.removeItem("complexappAvatar");
+      localStorage.removeItem("complexappNickname");
     }
   }, [state.loggedIn]);
 
@@ -101,6 +105,9 @@ function Main() {
             </Route>
             <Route path="/reset-password">
               <ResetPassword />
+            </Route>
+            <Route path="/profile/:username">
+              <Profile />
             </Route>
             <Route>
               <NotFound />

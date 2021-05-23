@@ -1,9 +1,11 @@
 body {
   font-family: "Public Sans", sans-serif;
 }
-
+.bg-custom {
+  background-color: #103256 !important;
+}
 .header-bar {
-  background-color: #292929;
+  background-color: #103256;
 }
 
 .container--narrow {
@@ -29,6 +31,15 @@ body {
   width: 16px;
   font-size: 0.6rem;
   font-weight: bold;
+}
+
+.avatar-regular {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  margin-right: 6px;
+  position: relative;
+  top: -5px;
 }
 
 .avatar-small {

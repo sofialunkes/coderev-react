@@ -13,6 +13,13 @@ function HomeGuest() {
       hasErrors: false,
       message: ""
     },
+    username: {
+      value: "",
+      hasErrors: false,
+      message: "",
+      isUnique: false,
+      checkCount: 0
+    },
     email: {
       value: "",
       hasErrors: false,
@@ -49,11 +56,35 @@ function HomeGuest() {
           draft.name.message = "Nome deve conter no minimo 5 caracteres.";
         }
         return;
+      case "usernameImmediately":
+        draft.username.hasErrors = false;
+        draft.username.value = action.value;
+        return;
+      case "usernameAfterDelay":
+        if (draft.username.value.length < 5) {
+          draft.username.hasErrors = true;
+          draft.username.message = "Username deve conter no minimo 5 caracteres.";
+        }
+        if (!draft.username.hasErrors && !action.noRequest) {
+          draft.username.checkCount++;
+        }
+        return;
+      case "usernameUniqueResults":
+        if (action.value) {
+          draft.username.hasErrors = true;
+          draft.username.isUnique = false;
+          draft.username.message = "Esse username já esta sendo usado.";
+        } else {
+          draft.username.isUnique = true;
+        }
+        return;
       case "emailImmediately":
+        console.log("emailImmediately");
         draft.email.hasErrors = false;
         draft.email.value = action.value;
         return;
       case "emailAfterDelay":
+        console.log("emailAfterDelay");
         if (!/^\S+@\S+$/.test(draft.email.value)) {
           draft.email.hasErrors = true;
           draft.email.message = "Você deve inserir um email válido e utilizado no slack.";
@@ -66,7 +97,7 @@ function HomeGuest() {
         if (action.value) {
           draft.email.hasErrors = true;
           draft.email.isUnique = false;
-          draft.email.message = "Esse email já esta sendo usado.";
+          draft.email.message = action.message == null ? "Esse email já esta sendo usado." : action.message;
         } else {
           draft.email.isUnique = true;
         }
@@ -94,7 +125,7 @@ function HomeGuest() {
         }
         return;
       case "submitForm":
-        if (!draft.name.hasErrors && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.scope.hasErrors) {
+        if (!draft.name.hasErrors && !draft.username.hasErrors && !draft.email.hasErrors && draft.email.isUnique && !draft.password.hasErrors && !draft.scope.hasErrors) {
           draft.submitCount++;
         }
         return;
@@ -111,6 +142,13 @@ function HomeGuest() {
   }, [state.name.value]);
 
   useEffect(() => {
+    if (state.username.value) {
+      const delay = setTimeout(() => dispatch({ type: "usernameAfterDelay" }), 800);
+      return () => clearTimeout(delay);
+    }
+  }, [state.username.value]);
+
+  useEffect(() => {
     if (state.email.value) {
       const delay = setTimeout(() => dispatch({ type: "emailAfterDelay" }), 800);
       return () => clearTimeout(delay);
@@ -125,6 +163,22 @@ function HomeGuest() {
   }, [state.password.value]);
 
   useEffect(() => {
+    if (state.username.checkCount) {
+      const ourRequest = Axios.CancelToken.source();
+      async function fetchResults() {
+        try {
+          const response = await Axios.post("/doesUsernameExist", { username: state.username.value }, { cancelToken: ourRequest.token });
+          dispatch({ type: "usernameUniqueResults", value: response.data });
+        } catch (e) {
+          console.log(e.response.data);
+        }
+      }
+      fetchResults();
+      return () => ourRequest.cancel();
+    }
+  }, [state.username.checkCount]);
+
+  useEffect(() => {
     if (state.email.checkCount) {
       const ourRequest = Axios.CancelToken.source();
       async function fetchResults() {
@@ -132,7 +186,7 @@ function HomeGuest() {
           const response = await Axios.post("/doesEmailExist", { email: state.email.value }, { cancelToken: ourRequest.token });
           dispatch({ type: "emailUniqueResults", value: response.data });
         } catch (e) {
-          console.log(e.response.data);
+          dispatch({ type: "emailUniqueResults", value: e.response.data.value, message: "Esse e-mail não está cadastrado no slack" });
         }
       }
       fetchResults();
@@ -162,6 +216,8 @@ function HomeGuest() {
 
     dispatch({ type: "nameImmediately", value: state.name.value });
     dispatch({ type: "nameAfterDelay", value: state.name.value, noRequest: true });
+    dispatch({ type: "usernameImmediately", value: state.username.value });
+    dispatch({ type: "usernameAfterDelay", value: state.username.value, noRequest: true });
     dispatch({ type: "emailImmediately", value: state.email.value });
     dispatch({ type: "emailAfterDelay", value: state.email.value, noRequest: true });
     dispatch({ type: "passwordImmediately", value: state.password.value });
@@ -175,7 +231,7 @@ function HomeGuest() {
     <Page title="Bem-vindo!" wide={true}>
       <div className="row align-items-center">
         <div className="col-lg-7 py-3 py-md-5">
-          <h1 className="display-3">Entregue Código &#128640;</h1>
+          <h1 className="display-3">Code Review & Promotion &#128640;</h1>
           <p className="lead text-muted">Pensando na melhoria nosso ciclo de entrega de códigos, o CodeRev veio ajudar a repassar nossos totens. Não se acanhe, código revisado ajuda não entregar bugs! &#128539;</p>
         </div>
 
@@ -188,6 +244,15 @@ function HomeGuest() {
               <input onChange={e => dispatch({ type: "nameImmediately", value: e.target.value })} id="name-register" name="name" className="form-control" type="text" placeholder="Insira seu nome" autoComplete="off" />
               <CSSTransition in={state.name.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
                 <div className="alert alert-danger small liveValidateMessage">{state.name.message}</div>
+              </CSSTransition>
+            </div>
+            <div className="form-group">
+              <label htmlFor="username-register" className="text-muted mb-1">
+                <small>Username</small>
+              </label>
+              <input onChange={e => dispatch({ type: "usernameImmediately", value: e.target.value })} id="username-register" name="username" className="form-control" type="text" placeholder="Insira seu username" autoComplete="off" />
+              <CSSTransition in={state.username.hasErrors} timeout={330} classNames="liveValidateMessage" unmountOnExit>
+                <div className="alert alert-danger small liveValidateMessage">{state.username.message}</div>
               </CSSTransition>
             </div>
             <div className="form-group">

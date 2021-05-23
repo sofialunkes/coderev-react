@@ -112,12 +112,23 @@ function Profile() {
 
         <div className="card col-6">
           <div className="card-body">
-            <div className="form-check form-switch">
-              <input onChange={e => dispatch({ type: "activeImmediately", value: e.target.checked })} className="form-check-input" type="checkbox" id="isInReviewList" checked={state.profileData.active} />
-              <label className="form-check-label" htmlFor="isInReviewList">
-                Participar da revisão
-              </label>
-            </div>
+            <form>
+              <div className="form-group">
+                <label for="exampleInputEmail1">Endereço e-mail cadastrado</label>
+                <input className="form-control" id="exampleInputEmail1" value={state.profileData.email} readOnly />
+              </div>
+              <div className="form-group">
+                <label for="inputNickname">Username</label>
+                <input className="form-control-plaintext" id="inputNickname" value={state.profileData.nickname} readOnly />
+                <small>Em construção.</small>
+              </div>
+              <div className=" form-check">
+                <input className="form-check-input" type="checkbox" onChange={e => dispatch({ type: "activeImmediately", value: e.target.checked })} id="isInReviewList" checked={state.profileData.active} />
+                <label className="form-check-label" htmlFor="isInReviewList">
+                  Participar da revisão
+                </label>
+              </div>
+            </form>
           </div>
         </div>
       </div>

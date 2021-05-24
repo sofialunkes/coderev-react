@@ -13,15 +13,28 @@ function HeaderLoggedIn() {
     appDispatch({ type: "flashMessage", value: "Deslogado com sucesso." });
   }
   return (
-    <div className="flex-row my-3 my-md-0">
-      <Link data-for="profile" data-tip="My Profile" to={`/profile/${appState.user.username}`} className="mr-2">
-        <img className="small-header-avatar" src={appState.user.avatar} />
-      </Link>
-      <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />{" "}
-      <button onClick={handleLogout} className="btn btn-sm btn-secondary">
-        Sair
-      </button>
-    </div>
+    <>
+      <div className="my-0 mr-md-auto font-weight-normal">
+        <Link to="/code-review" className="text-white">
+          Code Review
+        </Link>
+      </div>
+      <div className="my-0 mr-md-auto font-weight-normal">
+        <Link to="/promotion" className="text-white">
+          Promotion
+        </Link>
+      </div>
+
+      <div className="flex-row my-3 my-md-0">
+        <Link data-for="profile" data-tip="My Profile" to={`/profile/${appState.user.username}`} className="mr-2">
+          <img className="small-header-avatar" src={appState.user.avatar} />
+        </Link>
+        <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />{" "}
+        <button onClick={handleLogout} className="btn btn-sm btn-secondary">
+          Sair
+        </button>
+      </div>
+    </>
   );
 }
 

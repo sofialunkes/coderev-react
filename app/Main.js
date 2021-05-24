@@ -19,6 +19,8 @@ import NotFound from "./components/NotFound";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Profile from "./components/Profile";
+import ReviewList from "./components/review/ReviewList";
+import Promotion from "./components/promotion/Promotion";
 
 function Main() {
   const initialState = {
@@ -99,6 +101,12 @@ function Main() {
           <Switch>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
+            </Route>
+            <Route path="/code-review">
+              <ReviewList />
+            </Route>
+            <Route path="/promotion">
+              <Promotion />
             </Route>
             <Route path="/forgot-password">
               <ForgotPassword />

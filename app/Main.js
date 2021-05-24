@@ -22,15 +22,15 @@ import Profile from "./components/Profile";
 
 function Main() {
   const initialState = {
-    loggedIn: Boolean(localStorage.getItem("complexappToken")),
+    loggedIn: Boolean(localStorage.getItem("coderevToken")),
     flashMessages: [],
     tokenTemp: "",
     behavior: "",
     user: {
-      token: localStorage.getItem("complexappToken"),
-      email: localStorage.getItem("complexappEmail"),
-      avatar: localStorage.getItem("complexappAvatar"),
-      nickname: localStorage.getItem("complexappNickname")
+      token: localStorage.getItem("coderevToken"),
+      email: localStorage.getItem("coderevEmail"),
+      avatar: localStorage.getItem("coderevAvatar"),
+      username: localStorage.getItem("coderevUsername")
     },
     isSearchOpen: false,
     isChatOpen: false,
@@ -59,15 +59,15 @@ function Main() {
 
   useEffect(() => {
     if (state.loggedIn) {
-      localStorage.setItem("complexappToken", state.user.token);
-      localStorage.setItem("complexappEmail", state.user.email);
-      localStorage.setItem("complexappAvatar", state.user.avatar);
-      localStorage.setItem("complexappNickname", state.user.nickname);
+      localStorage.setItem("coderevToken", state.user.token);
+      localStorage.setItem("coderevEmail", state.user.email);
+      localStorage.setItem("coderevAvatar", state.user.avatar);
+      localStorage.setItem("coderevUsername", state.user.username);
     } else {
-      localStorage.removeItem("complexappToken");
-      localStorage.removeItem("complexappEmail");
-      localStorage.removeItem("complexappAvatar");
-      localStorage.removeItem("complexappNickname");
+      localStorage.removeItem("coderevToken");
+      localStorage.removeItem("coderevEmail");
+      localStorage.removeItem("coderevAvatar");
+      localStorage.removeItem("coderevUsername");
     }
   }, [state.loggedIn]);
 

@@ -16,7 +16,7 @@ function Profile() {
     profileData: {
       name: "...",
       email: "...",
-      nickname: useParams().username,
+      username: useParams().username,
       scope: "...",
       avatar: "https://secure.gravatar.com/avatar/3ea9b4a66b36358f4caa9416c607a74d.jpg?s=512&d=https%3A%2F%2Fa.slack-edge.com%2Fdf10d%2Fimg%2Favatars%2Fava_0003-512.png",
       active: false
@@ -54,7 +54,7 @@ function Profile() {
 
     async function fetchUser() {
       try {
-        const response = await Axios.get(`/users/${appState.user.nickname}`, { headers: { Authorization: appState.user.token } }, { cancelToken: ourRequest.token });
+        const response = await Axios.get(`/users/${appState.user.username}`, { headers: { Authorization: appState.user.token } }, { cancelToken: ourRequest.token });
         if (response.data) {
           dispatch({ type: "fetchComplete", value: response.data });
         } else {
@@ -79,7 +79,7 @@ function Profile() {
     if (state.sendCount > 0) {
       async function updateStatus() {
         try {
-          const response = await Axios.post(`/users/${appState.user.nickname}/status`, state.profileData, options);
+          const response = await Axios.post(`/users/${appState.user.username}/status`, state.profileData, options);
         } catch (e) {
           if (e.response.data.type == "user_with_totem") {
             appDispatch({ type: "flashMessage", behavior: "default", value: "Você possui um totem, repasse antes de sair da lista." });
@@ -114,12 +114,12 @@ function Profile() {
           <div className="card-body">
             <form>
               <div className="form-group">
-                <label for="exampleInputEmail1">Endereço e-mail cadastrado</label>
+                <label htmlFor="exampleInputEmail1">Endereço e-mail cadastrado:</label>
                 <input className="form-control" id="exampleInputEmail1" value={state.profileData.email} readOnly />
               </div>
               <div className="form-group">
-                <label for="inputNickname">Username</label>
-                <input className="form-control-plaintext" id="inputNickname" value={state.profileData.nickname} readOnly />
+                <label htmlFor="inputUsername">Username:</label>
+                <input className="form-control" id="inputUsername" value={state.profileData.username} readOnly />
                 <small>Em construção.</small>
               </div>
               <div className=" form-check">

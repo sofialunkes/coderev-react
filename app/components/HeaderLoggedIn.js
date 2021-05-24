@@ -14,7 +14,7 @@ function HeaderLoggedIn() {
   }
   return (
     <div className="flex-row my-3 my-md-0">
-      <Link data-for="profile" data-tip="My Profile" to={`/profile/${appState.user.nickname}`} className="mr-2">
+      <Link data-for="profile" data-tip="My Profile" to={`/profile/${appState.user.username}`} className="mr-2">
         <img className="small-header-avatar" src={appState.user.avatar} />
       </Link>
       <ReactTooltip place="bottom" id="profile" className="custom-tooltip" />{" "}

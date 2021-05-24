@@ -80,6 +80,7 @@ function Profile() {
       async function updateStatus() {
         try {
           const response = await Axios.post(`/users/${appState.user.username}/status`, state.profileData, options);
+          appDispatch({ type: "flashMessage", behavior: "success", value: "Participação alterada. " });
         } catch (e) {
           if (e.response.data.type == "user_with_totem") {
             appDispatch({ type: "flashMessage", behavior: "default", value: "Você possui um totem, repasse antes de sair da lista." });

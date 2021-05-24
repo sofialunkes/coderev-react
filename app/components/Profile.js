@@ -123,12 +123,14 @@ function Profile() {
                 <input className="form-control" id="inputUsername" value={state.profileData.username} readOnly />
                 <small>Em construção.</small>
               </div>
-              <div className=" form-check">
-                <input className="form-check-input" type="checkbox" onChange={e => dispatch({ type: "activeImmediately", value: e.target.checked })} id="isInReviewList" checked={state.profileData.active} />
-                <label className="form-check-label" htmlFor="isInReviewList">
-                  Participar da revisão
-                </label>
-              </div>
+              {state.profileData.scope != "viewer" && (
+                <div className=" form-check">
+                  <input className="form-check-input" type="checkbox" onChange={e => dispatch({ type: "activeImmediately", value: e.target.checked })} id="isInReviewList" checked={state.profileData.active} />
+                  <label className="form-check-label" htmlFor="isInReviewList">
+                    Participar da revisão
+                  </label>
+                </div>
+              )}
             </form>
           </div>
         </div>

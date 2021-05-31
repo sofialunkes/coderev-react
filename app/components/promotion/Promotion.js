@@ -11,9 +11,7 @@ function Promotion() {
       message: ""
     },
     date: {
-      value: "",
-      hasErrors: false,
-      message: ""
+      value: ""
     },
     squad: {
       value: "",
@@ -65,7 +63,7 @@ function Promotion() {
       hasErrors: false,
       message: ""
     },
-    component: {
+    components: {
       value: "",
       hasErrors: false,
       message: ""
@@ -95,8 +93,8 @@ function Promotion() {
         draft.service.value = action.value;
         return;
       case "dateImmediately":
-        draft.date.hasErrors = false;
-        draft.date.value = action.value;
+        draft.date.value = new Date().toJSON();
+        console.log(draft.date.value);
         return;
       case "squadImmediately":
         draft.squad.hasErrors = false;
@@ -117,10 +115,18 @@ function Promotion() {
       case "dateStartImmediately":
         draft.dateStart.hasErrors = false;
         draft.dateStart.value = action.value;
+        if (draft.dateStart.value == null) {
+          draft.dateStart.hasErrors = true;
+          draft.dateStart.message = "Data de inicio deve ser preenchida.";
+        }
         return;
       case "dateFinishImmediately":
         draft.dateFinish.hasErrors = false;
         draft.dateFinish.value = action.value;
+        if (draft.dateFinish.value < draft.dateStart.value && draft.dateStart.value != null) {
+          draft.dateFinish.hasErrors = true;
+          draft.dateFinish.message = "Data de término menor que a data de inicio.";
+        }
         return;
       case "responsibleImmediately":
         draft.responsible.hasErrors = false;
@@ -139,8 +145,8 @@ function Promotion() {
         draft.description.value = action.value;
         return;
       case "componentsImmediately":
-        draft.component.hasErrors = false;
-        draft.component.value = action.value;
+        draft.components.hasErrors = false;
+        draft.components.value = action.value;
         return;
       case "impactImmediately":
         draft.impact.hasErrors = false;
@@ -171,6 +177,7 @@ function Promotion() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    dispatch({ type: "dateImmediately" });
     dispatch({ type: "submitForm" });
   }
 
@@ -178,14 +185,14 @@ function Promotion() {
     <Page title="Promotion">
       <h1>Promotion</h1>
       <div className="card">
-        <div className="card-header">Descreva a mudança</div>
+        <div className="card-header">Descrição da mudança</div>
         <div className="card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group row">
               <label htmlFor="inputServico" className="col-sm-2 col-form-label">
                 Serviço
               </label>
-              <div className="col-sm-5">
+              <div className="col-sm-9">
                 <input
                   onChange={e => {
                     dispatch({ type: "serviceImmediately", value: e.target.value });
@@ -193,20 +200,7 @@ function Promotion() {
                   type="text"
                   className="form-control"
                   id="inputServico"
-                  placeholder="ex. cb-cbzito"
-                />
-              </div>
-              <label htmlFor="dataMudanca" className="col-sm-1 col-form-label">
-                Data
-              </label>
-              <div className="col-sm-3">
-                <input
-                  type="date"
-                  onChange={e => {
-                    dispatch({ type: "dateImmediately", value: e.target.value });
-                  }}
-                  className="form-control"
-                  id="dataMudanca"
+                  placeholder="ex. cb-projeto"
                 />
               </div>
             </div>
